@@ -16,6 +16,8 @@
     "ethereumjs-util": "^7.0.4",
     "express": "^4.17.1",
     "hdkey": "^2.0.1",
+    "http-status": "^1.4.2",
+    "request": "^2.88.2",
     "web3": "^1.2.11"
   }
 }
