@@ -3,7 +3,8 @@
         blockchain_message : {
             sucess : 'TRANSACTION SUCESS',
             failure : 'TRANSACTION FAILURE',
-            pending : 'TRANSACTION PENDING'
+            pending : 'TRANSACTION PENDING',
+            eth : 'Ethereum'
         }
     }
 })();

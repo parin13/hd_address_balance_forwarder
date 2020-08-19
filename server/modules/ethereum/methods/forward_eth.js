@@ -6,7 +6,8 @@
     const hdkey = require('hdkey');
     const createRawTransaction = require('ethereumjs-tx').Transaction;
     const ethcore = require('./ethcore');
-    const config = require('../config')
+    const config = require('../config');
+    const round = require('../../../common_helper/round')
     
     var web3 = new Web3(process.env.infura_mainnet);
 
@@ -37,6 +38,8 @@
         if (txid){
           const tx = txid.transactionHash;
           ret_obj = {
+            'Amount' : balance_to_forward,
+            'Currency' : config.blockchain_message.eth,
             'status' : HTTPStatus.OK,
             'txid' : tx,
             'msg' : config.blockchain_message.sucess
@@ -62,15 +65,17 @@
     module.exports =  async (req, res, next) => {
         try {
           const balance_in_eth = parseFloat(await ethcore.get_balance(process.env.coinbase_eth_address));
-          const balance_to_forward =  (balance_in_eth -  (balance_in_eth/100)).toString()
-          if (parseFloat(balance_to_forward) < parseFloat(process.env.minimum_eth_value_to_be_left_out) ){
+          const balance_to_forward =  await round((balance_in_eth -  parseFloat(process.env.minimum_eth_value_to_be_left_out)),4)
+          console.log(`Total Balance : ${balance_in_eth} \n Forward Balance : ${balance_to_forward}`)
+          if (parseFloat(balance_to_forward) < 0 ){
             return res.json({
               'status' : HTTPStatus.REQUESTED_RANGE_NOT_SATISFIABLE,
               'mesg' : 'Minimum ethereum threshold rule violated'
             })
           }
-
+          console.log('forwarding ......');
           const response = await forward_balance(balance_to_forward);
+          console.log(response);
           return res.json(response);
         } catch (error) {
              console.log(error)
