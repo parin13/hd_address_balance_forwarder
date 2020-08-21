@@ -6,17 +6,12 @@
     const hdkey = require('hdkey');
     const ethUtil = require('ethereumjs-util');
 
-    const createRawTransaction = require('ethereumjs-tx').Transaction;
 
     const common_helper = require('../../../common_helper');
 
     var web3 = new Web3(process.env.infura_mainnet);
 
     const mnemonic = process.env.mnemonic;
-    const metamask_address = process.env.to_address
-    const coinbase_eth_address = process.env.coinbase_eth_address
-
-
   
     function getAddress(){
       return new Promise( async (resolve, reject) => {

@@ -1,6 +1,7 @@
 (() => {
     module.exports = {
-      forwardEth : require('./methods/forward_eth')
+      forwardEth : require('./methods/forward_eth'),
+      ethCore : require('./methods/ethcore')
     }
   })();
   
