@@ -67,7 +67,7 @@
           const balance_in_eth = parseFloat(await ethcore.get_balance(process.env.coinbase_eth_address));
           const balance_to_forward =  await round((balance_in_eth -  parseFloat(process.env.minimum_eth_value_to_be_left_out)),4)
           console.log(`Total Balance : ${balance_in_eth} \n Forward Balance : ${balance_to_forward}`)
-          if (parseFloat(balance_to_forward) < 0 ){
+          if (parseFloat(balance_to_forward) < 0.0 ){
             return res.json({
               'status' : HTTPStatus.REQUESTED_RANGE_NOT_SATISFIABLE,
               'mesg' : 'Minimum ethereum threshold rule violated'
@@ -81,5 +81,4 @@
              console.log(error)
         }
      }
-
 })();

@@ -35,6 +35,27 @@ def webhook():
                 forward_eth_resp = requests.post(url, data = {})
                 if forward_eth_resp:
                     print (forward_eth_resp.text)
+            elif crypto == 'DAI':
+                print("Time delay of 2 min for Prepering transaction")
+                time.sleep(120)
+                print("*"*60)
+                print ("Processing Transaction..........")
+                print("*"*60)
+                url = 'http://localhost:4000/api/forward_dai'
+                forward_eth_resp = requests.post(url, data = {})
+                if forward_eth_resp:
+                    print (forward_eth_resp.text)                
+            elif crypto == 'USDC':
+                print("Time delay of 2 min for Prepering transaction")
+                time.sleep(120)
+                print("*"*60)
+                print ("Processing Transaction..........")
+                print("*"*60)
+                url = 'http://localhost:4000/api/forward_usdc'
+                forward_eth_resp = requests.post(url, data = {})
+                if forward_eth_resp:
+                    print (forward_eth_resp.text)
+
             return success_response({})
 
         if request.method == 'GET':
