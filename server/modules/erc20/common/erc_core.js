@@ -54,4 +54,3 @@
         sign_and_send_transaction : sign_and_send_transaction
     }    
 })();
-

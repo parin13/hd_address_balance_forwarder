@@ -25,7 +25,7 @@
           
           const rawData = {
             nonce: Web3.utils.toHex(await ercCore.getNonce(coinbase_eth_address)),
-            to: process.env.dai_address,
+            to: process.env.usdc_address,
             data : usdcInstance.methods.transfer(to_address, forward_bal).encodeABI(),
             gasPrice: Web3.utils.toHex( await ercCore.get_gas_price_infura()),
             gasLimit: Web3.utils.toHex(process.env.gasLimit)
