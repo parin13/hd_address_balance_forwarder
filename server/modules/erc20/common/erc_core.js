@@ -6,9 +6,20 @@
     
     const getErcBalance = async (ercInstance, address) => {
         try {
-            const balance_wei = await ercInstance.methods.balanceOf(address).call();
+            const balance_wei = await ercInstance.methods.balanceOf(address).call();  //not applicable for usdc as its decimal value is 6 
             const balance_eth = Web3.utils.fromWei(balance_wei, 'ether');
-            return +balance_eth;                        
+            return +balance_eth;
+        } catch (error) {
+            console.log(error);
+            throw (error)        
+        }
+    };
+
+
+    const getUsdcBalance = async (ercInstance, address) => {
+        try {
+            const balance_usdc = await ercInstance.methods.balanceOf(address).call();
+            return +(balance_usdc/1000000);
         } catch (error) {
             console.log(error);
             throw (error)        
@@ -51,6 +62,7 @@
         getErcBalance : getErcBalance,
         getNonce : getNonce,
         get_gas_price_infura : get_gas_price_infura,
-        sign_and_send_transaction : sign_and_send_transaction
+        sign_and_send_transaction : sign_and_send_transaction,
+        getUsdcBalance : getUsdcBalance
     }    
 })();

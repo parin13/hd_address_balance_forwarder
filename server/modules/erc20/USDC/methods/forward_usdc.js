@@ -1,15 +1,13 @@
 (()=>{
     'use strict';
-      const HTTPStatus = require('http-status');  
+      const HTTPStatus = require('http-status');
       const Web3 =  require('web3');
       const bip39 = require('bip39');
       const hdkey = require('hdkey');
       const ercCore = require('../../common/erc_core');
       const config = require('../config');
       const round = require('../../../../common_helper/round');
-      
-      var web3 = new Web3(process.env.infura_mainnet);
-  
+
       const mnemonic = process.env.mnemonic;
       const to_address = process.env.to_address
       const coinbase_eth_address = process.env.coinbase_eth_address
@@ -17,8 +15,8 @@
  
       const forward_balance = async (balance_to_forward) => {
         try{
-          const forward_bal = Web3.utils.toWei(balance_to_forward,'ether');
-
+          // const forward_bal = Web3.utils.toWei(balance_to_forward,'ether');
+          const forward_bal = balance_to_forward * 1000000;
           const seed = await bip39.mnemonicToSeed(mnemonic);
           const root = await hdkey.fromMasterSeed(seed);
           const addrNode = root.derive("m/44'/60'/0'/0/0");
@@ -63,9 +61,9 @@
   
       module.exports =  async (req, res, next) => {
           try {
-            const balance_in_usdc = await ercCore.getErcBalance(usdcInstance, to_address);
-            const balance_to_forward =  await round((balance_in_usdc -  parseFloat(process.env.minimum_usdc_value_to_be_left_out)),4)
-            console.log(`Total USDC Balance : ${balance_in_usdc} \n Forward Balance : ${balance_to_forward}`)
+            const balance_in_usdc = await ercCore.getUsdcBalance(usdcInstance, coinbase_eth_address);
+            const balance_to_forward =  await round((balance_in_usdc -  parseFloat(process.env.minimum_usdc_value_to_be_left_out)),4);
+            console.log(`Total USDC Balance : ${balance_in_usdc} \n Forward Balance : ${balance_to_forward}`);
             if (parseFloat(balance_to_forward) < 0.0 ){
               return res.json({
                 'status' : HTTPStatus.REQUESTED_RANGE_NOT_SATISFIABLE,

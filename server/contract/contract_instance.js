@@ -6,7 +6,7 @@
     const usdc_abi = require('./contracts').usdcABI
     
     const DAI_INSTANCE = new web3.eth.Contract(dai_abi, process.env.dai_address);
-    const USDC_INSTANCE = new web3.eth.Contract(usdc_abi, process.env.usdc_address);
+    const USDC_INSTANCE = new web3.eth.Contract(dai_abi, process.env.usdc_address);
 
     module.exports = {
         daiInstance: DAI_INSTANCE,
