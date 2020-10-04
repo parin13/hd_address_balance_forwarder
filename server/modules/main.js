@@ -19,12 +19,10 @@
             else if( crypto == 'DAI'){
                 erc.dai.forwardDai();
     
-            }else if(crypto == 'USDT'){
+            }else if(crypto == 'USDC'){
                 erc.usdc.forwardUsdc();
             }else{
-              return res.json({
-                  'status' : HTTPStatus.OK
-                });              
+              return;    
             }
         }catch(error){
             console.log(error);
