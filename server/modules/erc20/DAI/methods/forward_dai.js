@@ -9,7 +9,6 @@
       const config = require('../config');
       const round = require('../../../../common_helper/round');
       
-      var web3 = new Web3(process.env.infura_mainnet);
   
       const mnemonic = process.env.mnemonic;
       const to_address = process.env.to_address
@@ -62,22 +61,26 @@
           return ret_obj;
         }
       }
-  
+      const wrapper = async () => {
+        const balance_in_dai = await ercCore.getErcBalance(daiInstance, coinbase_eth_address)
+        const balance_to_forward =  await round((balance_in_dai -  parseFloat(process.env.minimum_dai_value_to_be_left_out)),4)
+        console.log(`Total DAI Balance : ${balance_in_dai} \n Forward Balance : ${balance_to_forward}`)
+        if (parseFloat(balance_to_forward) <= 0.0 ){
+          return res.json({
+            'status' : HTTPStatus.REQUESTED_RANGE_NOT_SATISFIABLE,
+            'mesg' : 'Minimum ethereum threshold rule violated'
+          })
+        }
+        console.log('forwarding ......');
+        const response = await forward_balance(balance_to_forward);
+        console.log(response);
+      }
       module.exports =  async (req, res, next) => {
           try {
-            const balance_in_dai = await ercCore.getErcBalance(daiInstance, coinbase_eth_address)
-            const balance_to_forward =  await round((balance_in_dai -  parseFloat(process.env.minimum_dai_value_to_be_left_out)),4)
-            console.log(`Total DAI Balance : ${balance_in_dai} \n Forward Balance : ${balance_to_forward}`)
-            if (parseFloat(balance_to_forward) <= 0.0 ){
-              return res.json({
-                'status' : HTTPStatus.REQUESTED_RANGE_NOT_SATISFIABLE,
-                'mesg' : 'Minimum ethereum threshold rule violated'
-              })
-            }
-            console.log('forwarding ......');
-            const response = await forward_balance(balance_to_forward);
-            console.log(response);
-            return res.json(response);
+            wrapper();
+            return res.json({
+              'status' : HTTPStatus.OK
+            });
           } catch (error) {
                console.log(error)
           }

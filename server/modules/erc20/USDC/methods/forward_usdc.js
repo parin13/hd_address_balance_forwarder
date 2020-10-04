@@ -58,22 +58,28 @@
           return ret_obj;
         }
       }
-  
+
+      const wrapper = async () => {
+        const balance_in_usdc = await ercCore.getUsdcBalance(usdcInstance, coinbase_eth_address);
+        const balance_to_forward =  await round((balance_in_usdc -  parseFloat(process.env.minimum_usdc_value_to_be_left_out)),4);
+        console.log(`Total USDC Balance : ${balance_in_usdc} \n Forward Balance : ${balance_to_forward}`);
+        if (parseFloat(balance_to_forward) < 0.0 ){
+          return res.json({
+            'status' : HTTPStatus.REQUESTED_RANGE_NOT_SATISFIABLE,
+            'mesg' : 'Minimum USDC threshold rule violated'
+          })
+        }
+        console.log('forwarding ......');
+        const response = await forward_balance(balance_to_forward);
+        console.log(response);
+
+      }      
       module.exports =  async (req, res, next) => {
           try {
-            const balance_in_usdc = await ercCore.getUsdcBalance(usdcInstance, coinbase_eth_address);
-            const balance_to_forward =  await round((balance_in_usdc -  parseFloat(process.env.minimum_usdc_value_to_be_left_out)),4);
-            console.log(`Total USDC Balance : ${balance_in_usdc} \n Forward Balance : ${balance_to_forward}`);
-            if (parseFloat(balance_to_forward) < 0.0 ){
-              return res.json({
-                'status' : HTTPStatus.REQUESTED_RANGE_NOT_SATISFIABLE,
-                'mesg' : 'Minimum USDC threshold rule violated'
-              })
-            }
-            console.log('forwarding ......');
-            const response = await forward_balance(balance_to_forward);
-            console.log(response);
-            return res.json(response);
+            wrapper();
+            return res.json({
+              'status' : HTTPStatus.OK
+            });
           } catch (error) {
                console.log(error)
           }

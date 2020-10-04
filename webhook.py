@@ -27,7 +27,7 @@ def webhook():
             print("*"*60)
             if crypto == 'ETH':
                 print("Time delay of 2 min for Prepering transaction")
-                time.sleep(120)
+                # time.sleep(120)
                 print("*"*60)
                 print ("Processing Transaction..........")
                 print("*"*60)
@@ -37,7 +37,7 @@ def webhook():
                     print (forward_eth_resp.text)
             elif crypto == 'DAI':
                 print("Time delay of 2 min for Prepering transaction")
-                time.sleep(120)
+                # time.sleep(120)
                 print("*"*60)
                 print ("Processing Transaction..........")
                 print("*"*60)
@@ -47,7 +47,7 @@ def webhook():
                     print (forward_eth_resp.text)                
             elif crypto == 'USDC':
                 print("Time delay of 2 min for Prepering transaction")
-                time.sleep(120)
+                # time.sleep(120)
                 print("*"*60)
                 print ("Processing Transaction..........")
                 print("*"*60)
