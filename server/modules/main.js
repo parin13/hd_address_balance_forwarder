@@ -9,6 +9,8 @@
         const payment_detail = post_data.event.data.payments[0];
         const detail = payment_detail.value.crypto;
         const crypto = detail.currency;
+        const amount = detail.amount;
+        console.log(">>>>>>>>>>>>>>>>>>> transction Received <<<<<<<<<<<< :: ", amount, crypto);
         if (crypto == 'ETH'){
             eth.forwardEth()
         }
