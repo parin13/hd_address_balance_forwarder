@@ -6,6 +6,7 @@
 
     const wrapper = async (req) => {
         const post_data = req.body;
+        console.log('>>>>>>>>>>>>coinase request \n\n ',post_data);
         const payment_detail = post_data.event.data.payments[0];
         const detail = payment_detail.value.crypto;
         const crypto = detail.currency;
