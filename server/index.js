@@ -48,7 +48,7 @@ app.use((req, res, next) => {
   });
 });
 
-app.use('/api', indexRouter);
+app.use('/bitgoud', indexRouter);
 
 /* catch 404 and forward to error handler */
 app.use((req, res, next) => {

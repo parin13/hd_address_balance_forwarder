@@ -64,22 +64,21 @@
         const balance_to_forward =  await round((balance_in_usdc -  parseFloat(process.env.minimum_usdc_value_to_be_left_out)),4);
         console.log(`Total USDC Balance : ${balance_in_usdc} \n Forward Balance : ${balance_to_forward}`);
         if (parseFloat(balance_to_forward) < 0.0 ){
-          return res.json({
+          console.log({
             'status' : HTTPStatus.REQUESTED_RANGE_NOT_SATISFIABLE,
             'mesg' : 'Minimum USDC threshold rule violated'
-          })
+          });
+          return;
         }
         console.log('forwarding ......');
         const response = await forward_balance(balance_to_forward);
         console.log(response);
 
       }      
-      module.exports =  async (req, res, next) => {
+      module.exports =  async () => {
           try {
             wrapper();
-            return res.json({
-              'status' : HTTPStatus.OK
-            });
+            return;
           } catch (error) {
                console.log(error)
           }
