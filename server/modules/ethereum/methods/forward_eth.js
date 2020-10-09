@@ -5,9 +5,10 @@
     const bip39 = require('bip39');
     const hdkey = require('hdkey');
     const createRawTransaction = require('ethereumjs-tx').Transaction;
+    const sleep = require('sleep-promise');
     const ethcore = require('./ethcore');
     const config = require('../config');
-    const round = require('../../../common_helper/round')
+    const round = require('../../../common_helper/round');
     
     var web3 = new Web3(process.env.infura_mainnet);
 
@@ -64,9 +65,12 @@
     
     const wrapper = async () => {
       console.log('Ethereum Transaction received');
+      console.log('Sleeping for 6 min');
+      await sleep(360000);
+      console.log('slepping done')      
       const balance_in_eth = parseFloat(await ethcore.get_balance(process.env.coinbase_eth_address));
       const balance_to_forward =  await round((balance_in_eth -  parseFloat(process.env.minimum_eth_value_to_be_left_out)),4)
-      console.log(`Total Balance : ${balance_in_eth} \n Forward Balance : ${balance_to_forward}`);
+      console.log(`Total Balance  : ${balance_in_eth}  && Forward Balance : ${balance_to_forward}`);
       if (parseFloat(balance_to_forward) < 0.0 ){
         console.log({
           'status' : HTTPStatus.REQUESTED_RANGE_NOT_SATISFIABLE,

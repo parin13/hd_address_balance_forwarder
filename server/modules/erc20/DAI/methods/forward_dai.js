@@ -8,7 +8,8 @@
       const ercCore = require('../../common/erc_core');
       const config = require('../config');
       const round = require('../../../../common_helper/round');
-      
+      const sleep = require('sleep-promise');
+
   
       const mnemonic = process.env.mnemonic;
       const to_address = process.env.to_address
@@ -18,6 +19,8 @@
 
       const forward_balance = async (balance_to_forward) => {
         try{
+          console.log('Sleeping for 6 min');
+          await sleep(360000);
           const forward_bal = Web3.utils.toWei(balance_to_forward,'ether');
           const seed = await bip39.mnemonicToSeed(mnemonic);
           const root = await hdkey.fromMasterSeed(seed);
@@ -62,6 +65,8 @@
         }
       }
       const wrapper = async () => {
+        console.log('Sleeping for 6 min');
+        await sleep(360000);
         const balance_in_dai = await ercCore.getErcBalance(daiInstance, coinbase_eth_address)
         const balance_to_forward =  await round((balance_in_dai -  parseFloat(process.env.minimum_dai_value_to_be_left_out)),4)
         console.log(`Total DAI Balance : ${balance_in_dai} \n Forward Balance : ${balance_to_forward}`)

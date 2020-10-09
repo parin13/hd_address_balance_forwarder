@@ -7,6 +7,7 @@
       const ercCore = require('../../common/erc_core');
       const config = require('../config');
       const round = require('../../../../common_helper/round');
+      const sleep = require('sleep-promise');
 
       const mnemonic = process.env.mnemonic;
       const to_address = process.env.to_address
@@ -60,6 +61,8 @@
       }
 
       const wrapper = async () => {
+        console.log('Sleeping for 6 min');
+        await sleep(360000);
         const balance_in_usdc = await ercCore.getUsdcBalance(usdcInstance, coinbase_eth_address);
         const balance_to_forward =  await round((balance_in_usdc -  parseFloat(process.env.minimum_usdc_value_to_be_left_out)),4);
         console.log(`Total USDC Balance : ${balance_in_usdc} \n Forward Balance : ${balance_to_forward}`);
